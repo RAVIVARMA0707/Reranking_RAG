@@ -8,7 +8,7 @@ PG_CONNECTION = os.getenv("PG_CONNECTION_STRING")
 
 def get_embeddings():
     return GoogleGenerativeAIEmbeddings(
-        model= os.environ.get("GOOGLE_EMBEDDINGS_MODEL"),
+        model= os.environ.get("GOOGLE_EMBEDDING_MODEL"),
         api_key= os.environ.get("GOOGLE_API_KEY"),
         output_dimensionality=1536
     )

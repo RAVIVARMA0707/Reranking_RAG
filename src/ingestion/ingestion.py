@@ -25,7 +25,7 @@ from src.core.db import get_vector_store
 load_dotenv()
 PG_CONNECTION = os.getenv("PG_CONNECTION_STRING")
 
-def ingest_pdf(file_path,file_category):
+def ingest_pdf(file_path):
     """Ingest a PDF file and save it in vector database"""
 
     # 1. load the pdf from data folder
@@ -36,6 +36,7 @@ def ingest_pdf(file_path,file_category):
     for doc in docs:
         doc.metadata.update(
             {
+            "filename":os.path.basename(file_path),
             "page": doc.metadata.get("page",None),
             "title": doc.metadata.get("title",None),
             "source": file_path,
@@ -54,7 +55,7 @@ def ingest_pdf(file_path,file_category):
 
     # 4. create embeddings for the chunks
     # 5. store those embeddings in a vector database
-    vector_store = get_vector_store(file_category)
+    vector_store = get_vector_store()
 
     vector_store.add_documents(chunks)
     print("RAG ingestion sucessfull")
@@ -62,5 +63,5 @@ def ingest_pdf(file_path,file_category):
     
         
 if __name__ == "__main__":
-    ingest_pdf("data/HR_Support_Desk_KnowledgeBase.pdf","hr_support_desk")
-    # ingest_pdf("data/RIL-Media-Release-RIL-Q2-FY2024-25-Financial-and-Operational-Performance.pdf","hr_support_desk")
+    ingest_pdf("data/HR_Knowledge_Base_2025.pdf")
+    ingest_pdf("data/HR_Knowledge_Base_2026.pdf")
